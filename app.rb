@@ -36,7 +36,7 @@ end
 post '/memos' do
   @memo = Memo.new(title: params[:title], body: params[:body])
   @memo.save
-  # showにリダイレクト
+  redirect '/'
 end
 
 get '/memos/:id' do
@@ -52,11 +52,10 @@ end
 patch '/memos/:id' do
   @memo = Memo.find(params[:id])
   @memo.update(memo_params)
-  # showにリダイレクト
 end
 
 delete '/memos/:id' do
   @memo = Memo.find(params[:id])
   @memo.destory
-  # indexにリダイレクト
+  redirect '/'
 end
