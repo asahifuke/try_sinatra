@@ -1,28 +1,8 @@
 require 'sinatra'
 require 'sinatra/reloader'
-
-class Memo
-  def initialize(title:, body:)
-    @title = title
-    @body  = body
-  end
-
-  def save
-    puts @title
-    puts @body
-  end
-
-  def self.all
-    [
-      {id: 1, title: "title1", body: "body1"},
-      {id: 2, title: "title2", body: "body2"}
-    ]
-  end
-
-  def self.find(id)
-    {id: 1, title: "title1", body: "body1"}
-  end
-end
+require 'securerandom'
+require "csv"
+require_relative './memo'
 
 get '/' do
   @memos = Memo.all
@@ -34,28 +14,27 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  @memo = Memo.new(title: params[:title], body: params[:body])
-  @memo.save
+  memo = Memo.new(title: params[:title], body: params[:body])
+  memo.save
   redirect '/'
 end
 
-get '/memos/:id' do
-  @memo = Memo.find(params[:id])
+get '/memos/:id' do |id|
+  @memo = Memo.find(id)
   erb :show
 end
 
-get '/memos/:id/edit' do
-  @memo = Memo.find(params[:id])
+get '/memos/:id/edit' do |id|
+  @memo = Memo.find(id)
   erb :edit
 end
 
-patch '/memos/:id' do
-  @memo = Memo.find(params[:id])
-  @memo.update(memo_params)
+patch '/memos/:id' do |id|
+  Memo.update(id: id, title: params[:title], body: params[:body])
+  redirect "/memos/#{id}"
 end
 
-delete '/memos/:id' do
-  @memo = Memo.find(params[:id])
-  @memo.destory
+delete '/memos/:id' do |id|
+  Memo.destory(id)
   redirect '/'
 end
