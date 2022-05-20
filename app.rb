@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'securerandom'
-require "csv"
+require 'csv'
 require_relative './memo'
 
 get '/' do
@@ -14,8 +16,7 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memo = Memo.new(title: params[:title], body: params[:body])
-  memo.save
+  Memo.create(title: params[:title], body: params[:body])
   redirect '/'
 end
 
