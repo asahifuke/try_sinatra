@@ -1,8 +1,10 @@
-<div><%= @memo[1] %></div>
-<div><%= @memo[2] %></div>
-<a href="/memos/<%= @memo[0] %>/edit">変更</a>
-<form method="post" action="/memos/<%= @memo[0] %>">
-  <input type="hidden" id="_method" name="_method" value="delete">
-  <input type="hidden" id="id" name="id" value="<%= @memo[0] %>">
-  <input type="submit" value="削除">
-</form>
+<div><%= @memo.title %></div>
+<div><%= @memo.body %></div>
+<div style="display: flex;">
+  <button style="margin-right: 5px;" onclick='location.href="/memos/<%= @memo.id %>/edit"'>変更</button>
+  <form method="post" action="/memos/<%= @memo.id %>">
+    <input type="hidden" id="_method" name="_method" value="delete">
+    <input type="hidden" id="id" name="id" value="<%= @memo.id %>">
+    <input type="submit" value="削除">
+  </form>
+</div>
