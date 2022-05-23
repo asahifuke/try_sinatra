@@ -1,7 +1,7 @@
-<div><%= @memo.title %></div>
+<div style="margin-bottom: 15px;"><%= @memo.title %></div>
 <div><%= @memo.body %></div>
-<div style="display: flex;">
-  <button style="margin-right: 5px;" onclick='location.href="/memos/<%= @memo.id %>/edit"'>変更</button>
+<div style="display: flex; justify-content: center; margin-top: 15px;">
+  <button style="margin-right: 15px;" onclick='location.href="/memos/<%= @memo.id %>/edit"'>変更</button>
   <form method="post" action="/memos/<%= @memo.id %>">
     <input type="hidden" id="_method" name="_method" value="delete">
     <input type="hidden" id="id" name="id" value="<%= @memo.id %>">

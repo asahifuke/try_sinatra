@@ -1,13 +1,24 @@
 # frozen_string_literal: true
-require_relative './class_methods'
 
-class Memo < ClassMethods
+class Memo
   CSV_NAME = 'data.csv'
   attr_accessor :id, :title, :body
-  def initialize(id: 'save', title:, body:)
+
+  def self.all
+    read_csv.map! { |data| Memo.new(id: data[0], title: data[1], body: data[2]) }
+  end
+
+  def self.find(id)
+    id = escape(id)
+    CSV.foreach(CSV_NAME) do |row|
+      return Memo.new(id: row[0], title: row[1], body: row[2]) if row[0] == id
+    end
+  end
+
+  def initialize(title:, body:, id: 'save')
     @id    = id
     @title = id == 'save' ? escape(title) : title
-    @body  = id == 'save' ? escape(body)  : body 
+    @body  = id == 'save' ? escape(body)  : body
   end
 
   def save
@@ -36,7 +47,7 @@ class Memo < ClassMethods
 
   def write_csv(datas)
     CSV.open(CSV_NAME, 'wb') do |csv|
-      datas.each{|data| csv << data}
+      datas.each { |data| csv << data }
     end
   end
 
@@ -56,5 +67,33 @@ class Memo < ClassMethods
       text.gsub!(key, value)
     end
     text
+  end
+
+  class << self
+    private
+
+    def write_csv(datas)
+      CSV.open(CSV_NAME, 'wb') do |csv|
+        datas.each { |data| csv << data }
+      end
+    end
+
+    def read_csv
+      CSV.read(CSV_NAME)
+    end
+
+    def escape(text)
+      escape_characters = {
+        '&' => '&amp;',
+        '<' => '&lt;',
+        '>' => '&gt;',
+        '\'' => '&quot;',
+        '"' => '&#39;'
+      }
+      escape_characters.each do |key, value|
+        text.gsub!(key, value)
+      end
+      text
+    end
   end
 end

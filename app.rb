@@ -31,13 +31,13 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-patch '/memos/:id' do 
+patch '/memos/:id' do
   @memo = Memo.find(params[:id])
   @memo.update(title: params[:title], body: params[:body])
   redirect "/memos/#{@memo.id}"
 end
 
-delete '/memos/:id' do |id|
+delete '/memos/:id' do
   @memo = Memo.find(params[:id])
   @memo.destory
   redirect '/'
