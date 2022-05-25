@@ -1,2 +1,14 @@
-<div>編入画面</div>
-<a href="/memos/<%= @memo[:id] %>">変更</a>
+<form method="post" action="/memos/<%= @memo.id %>" >
+<input type="hidden" id="_method" name="_method" value="patch">
+<div>
+  <input style='width: 100%; margin-bottom: 15px;' type="text" name="title" value=<%= @memo.title %>>
+</div>
+
+<div>
+  <textarea style='height: 300px; width: 100%; margin-bottom: 15px;' type="text-area" name="body"><%= @memo.body %></textarea>
+</div>
+
+<div style='text-align: center;'>
+  <input type="submit" value="変更">
+</div>
+</form>

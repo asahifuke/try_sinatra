@@ -1,8 +1,14 @@
-<a href= "/memos/new">追加</a>
+<div style="text-align: right;">
+  <button onclick='location.href="/memos/new"'>
+    追加
+  </button>
+</div>
 <% @memos.each do |memo| %>
-  <div>
-    <a href= "/memos/<%= memo[:id] %>">
-      <%= memo[:title] %>
-    </a>
-  </div>
+  <ul>
+    <li>
+      <a href= "/memos/<%= memo.id %>">
+        <%= memo.title %>
+      </a>
+    </li>
+  </ul>
 <% end %>

@@ -1,28 +1,10 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
-
-class Memo
-  def initialize(title:, body:)
-    @title = title
-    @body  = body
-  end
-
-  def save
-    puts @title
-    puts @body
-  end
-
-  def self.all
-    [
-      {id: 1, title: "title1", body: "body1"},
-      {id: 2, title: "title2", body: "body2"}
-    ]
-  end
-
-  def self.find(id)
-    {id: 1, title: "title1", body: "body1"}
-  end
-end
+require 'securerandom'
+require 'csv'
+require_relative './memo'
 
 get '/' do
   @memos = Memo.all
@@ -36,7 +18,7 @@ end
 post '/memos' do
   @memo = Memo.new(title: params[:title], body: params[:body])
   @memo.save
-  # showにリダイレクト
+  redirect '/'
 end
 
 get '/memos/:id' do
@@ -51,12 +33,12 @@ end
 
 patch '/memos/:id' do
   @memo = Memo.find(params[:id])
-  @memo.update(memo_params)
-  # showにリダイレクト
+  @memo.update(title: params[:title], body: params[:body])
+  redirect "/memos/#{@memo.id}"
 end
 
 delete '/memos/:id' do
   @memo = Memo.find(params[:id])
   @memo.destory
-  # indexにリダイレクト
+  redirect '/'
 end
